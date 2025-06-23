@@ -1,20 +1,44 @@
-import React, { Component } from 'react';
-
+//
+import React, {Component} from 'react'
+import {withRouter} from 'react-router-dom'
 
 class Header extends Component {
+  onCartButtonClick = () => {
+    const {history} = this.props
+    history.push('/cart')
+  }
+
   render() {
-    const { restaurantName, cartCount } = this.props;
+    const {restaurantName, cartCount} = this.props
     return (
       <header className="header">
-        <h1 className="restaurant-heading">{restaurantName}</h1> {/* Test Case 2 */}
+        <h1 className="restaurant-heading">{restaurantName}</h1>
         <div className="cart-section">
-          <p className="my-orders-text">My Orders</p> {/* Test Case 3 */}
-          <span className="cart-icon">🛒</span>
-          <span className="cart-count">{cartCount}</span> {/* Test Case 28, 29, 31, 32 */}
+          <button
+            type="button"
+            className="my-orders-button"
+            onClick={this.onCartButtonClick}
+          >
+            My Orders
+          </button>
+
+          <button
+            type="button"
+            className="cart-icon-button"
+            onClick={this.onCartButtonClick}
+            aria-label={`View ${cartCount} items in cart`}
+          >
+            <span className="cart-icon" role="img" aria-label="shopping cart">
+              🛒
+            </span>
+            <span className="cart-count" data-testid="cart-count">
+              {cartCount}
+            </span>
+          </button>
         </div>
       </header>
-    );
+    )
   }
 }
 
-export default Header;
+export default withRouter(Header)

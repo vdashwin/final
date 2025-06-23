@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-
+import React, {Component} from 'react'
 
 class LoadingSpinner extends Component {
   render() {
@@ -8,8 +7,8 @@ class LoadingSpinner extends Component {
         <div className="spinner"></div>
         <p>Loading restaurant menu...</p>
       </div>
-    );
+    )
   }
 }
 
-export default LoadingSpinner;
+export default LoadingSpinner

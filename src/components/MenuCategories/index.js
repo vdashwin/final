@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import {Component} from 'react'
 
 class MenuCategories extends Component {
   render() {
@@ -10,12 +10,13 @@ class MenuCategories extends Component {
           {categories.map(category => (
             <li key={category.menu_category_id}>
               <button
+                type="button"
                 className={`category-button ${
                   activeCategory === category.menu_category ? 'active' : ''
                 }`}
                 onClick={() => onCategoryClick(category.menu_category)}
               >
-                {category.menu_category} {/* Test Case 4 & 33 */}
+                {category.menu_category}
               </button>
             </li>
           ))}
