@@ -49,12 +49,11 @@ class DishCard extends Component {
     const showQuantityControls = dish.dish_Availability
     const showAddToCartButton = dish.dish_Availability && stagedQuantity > 0
 
-    // Use parseFloat for numerical operations to avoid string concatenation issues
+    
     const displayedPrice =
       stagedQuantity > 0
         ? (parseFloat(dish.dish_price) * stagedQuantity).toFixed(2)
-        : parseFloat(dish.dish_price).toFixed(2) // Ensure original price is also formatted if tests expect it
-
+        : parseFloat(dish.dish_price).toFixed(2) 
     return (
       <div className="dish-card">
         <div
@@ -68,12 +67,12 @@ class DishCard extends Component {
           }
         ></div>
         <div className="dish-details">
-          {/* Ensure direct text content for easier testing */}
+         
           <h3 className="dish-name">{dish.dish_name}</h3>
-          {/* Combined for cleaner text content for testing */}
+         
           <p className="dish-price">{`${dish.dish_currency} ${displayedPrice}`}</p>
           <p className="dish-description">{dish.dish_description}</p>
-          {/* Ensure text is directly in the p tag */}
+         
           <p className="dish-calories">{`${dish.dish_calories} calories`}</p>
 
           {dish.addonCat && dish.addonCat.length > 0 && (
@@ -94,7 +93,7 @@ class DishCard extends Component {
               >
                 -
               </button>
-              {/* Ensure this is a direct text node or simple span for testing `0` */}
+             
               <p className="dish-quantity">{stagedQuantity}</p>
               <button
                 type="button"
