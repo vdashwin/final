@@ -20,21 +20,21 @@ export class CartProvider extends Component {
     return cartList.find(item => item.dish_id === dishId)
   }
 
-  // addCartItem now ACCUMULATES quantity if item exists in cart
+ 
   addCartItem = (dish, quantityToAdd = 1) => {
     this.setState(prevState => {
       const existingDish = this.findDishInCart(dish.dish_id)
       let updatedCartList
 
       if (existingDish) {
-        // If dish already exists, INCREMENT its quantity by the quantityToAdd
+        
         updatedCartList = prevState.cartList.map(item =>
           item.dish_id === dish.dish_id
-            ? {...item, quantity: item.quantity + quantityToAdd} // Accumulate quantity
+            ? {...item, quantity: item.quantity + quantityToAdd} 
             : item,
         )
       } else {
-        // If new dish, add it with the specified quantity
+       
         updatedCartList = [
           ...prevState.cartList,
           {...dish, quantity: quantityToAdd},
@@ -50,7 +50,7 @@ export class CartProvider extends Component {
     }))
   }
 
-  // These methods are primarily for CartRoute or other direct cart manipulations.
+ 
   incrementCartItemQuantity = dishId => {
     this.setState(prevState => {
       const existingDish = this.findDishInCart(dishId)
@@ -63,7 +63,7 @@ export class CartProvider extends Component {
           ),
         }
       }
-      return prevState // Return current state if dish not found
+      return prevState
     })
   }
 
@@ -80,7 +80,7 @@ export class CartProvider extends Component {
             ),
           }
         } else if (existingDish.quantity === 1) {
-          // If quantity becomes 0, remove the item from the cart
+         
           return {
             cartList: prevState.cartList.filter(
               item => item.dish_id !== dishId,
@@ -88,7 +88,7 @@ export class CartProvider extends Component {
           }
         }
       }
-      return prevState // Return current state if dish not found or quantity already 0
+      return prevState 
     })
   }
 
