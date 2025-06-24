@@ -28,7 +28,7 @@ class CartRoute extends Component {
 
     return (
       <li key={item.dish_id} className="cart-item">
-        {/* Ensure alt text is present and unique if there are multiple images */}
+        
         <img
           src={item.dish_image}
           alt={`${item.dish_name} dish`}
@@ -39,7 +39,7 @@ class CartRoute extends Component {
           <p className="cart-item-price">{`${item.dish_currency} ${parseFloat(
             item.dish_price,
           ).toFixed(2)}`}</p>{' '}
-          {/* Display unit price */}
+          
           <div className="cart-item-quantity-controls">
             <button
               type="button"
@@ -67,7 +67,7 @@ class CartRoute extends Component {
     <div className="empty-cart-view">
       <img
         src="https://assets.ccbp.in/frontend/react-js/nxt-trendz-empty-cart-img.png"
-        alt="empty cart" // Explicit alt text for the empty cart image
+        alt="empty cart" 
         className="empty-cart-image"
       />
       <p className="empty-cart-text">Your cart is empty!</p>
@@ -105,7 +105,7 @@ class CartRoute extends Component {
                     {cartList.map(item => this.renderCartItem(item, value))}
                   </ul>
                   <div className="order-summary">
-                    {/* Ensure direct text content for the total price */}
+                   
                     <h3>{`Order Total: INR ${totalOrderPrice}`}</h3>
                     <button type="button" className="place-order-button">
                       Place Order
