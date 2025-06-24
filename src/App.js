@@ -50,7 +50,7 @@ class HomeContent extends Component {
 
       this.setState(
         {
-          // Ensure restaurant_name is correctly assigned
+         
           restaurantName: restaurantDetails.restaurant_name,
           menuCategories: restaurantDetails.table_menu_list,
           loading: false,
@@ -120,7 +120,7 @@ class HomeContent extends Component {
 
           return (
             <>
-              {/* Ensure MenuCategories correctly renders buttons based on props */}
+             
               <MenuCategories
                 categories={menuCategories}
                 activeCategory={activeCategory}
@@ -155,14 +155,14 @@ class App extends Component {
     return (
       <BrowserRouter>
         <CartProvider>
-          {/* Conditional rendering for the Header based on route */}
+          
           <Route path="/" render={({ location }) => (
             location.pathname !== '/login' && (
               <CartContext.Consumer>
                 {value => {
                   const { cartList } = value;
                   const cartCount = cartList.reduce((acc, item) => acc + item.quantity, 0);
-                  // Pass restaurantName from HomeContent state to Header
+                 
                   return <Header restaurantName="UNI Resto Cafe" cartCount={cartCount} />;
                 }}
               </CartContext.Consumer>
