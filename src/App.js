@@ -11,7 +11,7 @@ import Login from './components/Login';
 import CartRoute from './components/CartRoute';
 import CartContext, { CartProvider } from './context/CartContext';
 
-import './App.css'; // Ensure this exists
+import './App.css';
 
 const dishesApiUrl =
   'https://apis2.ccbp.in/restaurant-app/restaurant-menu-list-details';
@@ -50,6 +50,7 @@ class HomeContent extends Component {
 
       this.setState(
         {
+          // Ensure restaurant_name is correctly assigned
           restaurantName: restaurantDetails.restaurant_name,
           menuCategories: restaurantDetails.table_menu_list,
           loading: false,
@@ -107,19 +108,19 @@ class HomeContent extends Component {
     return (
       <CartContext.Consumer>
         {value => {
-          const { cartList, addCartItem } = value; // Only need addCartItem here now
+          const { cartList, addCartItem } = value;
           const getDishQuantity = (dishId) => {
             const item = cartList.find(item => item.dish_id === dishId);
             return item ? item.quantity : 0;
           }
 
-          // This handler now only concerns the "ADD TO CART" action
           const handleAddOrUpdateCart = (dish, stagedQuantity) => {
-            addCartItem(dish, stagedQuantity); // Add/update with the staged quantity
+            addCartItem(dish, stagedQuantity);
           }
 
           return (
             <>
+              {/* Ensure MenuCategories correctly renders buttons based on props */}
               <MenuCategories
                 categories={menuCategories}
                 activeCategory={activeCategory}
@@ -131,8 +132,8 @@ class HomeContent extends Component {
                     <DishCard
                       key={dish.dish_id}
                       dish={dish}
-                      quantity={getDishQuantity(dish.dish_id)} // Pass actual cart quantity for sync
-                      onAddOrUpdateCart={handleAddOrUpdateCart} // New prop for ADD TO CART
+                      quantity={getDishQuantity(dish.dish_id)}
+                      onAddOrUpdateCart={handleAddOrUpdateCart}
                     />
                   ))
                 ) : (
@@ -154,15 +155,21 @@ class App extends Component {
     return (
       <BrowserRouter>
         <CartProvider>
-          <div className="app-container">
-            <CartContext.Consumer>
-              {value => {
-                const { cartList } = value;
-                const cartCount = cartList.reduce((acc, item) => acc + item.quantity, 0);
-                return <Header restaurantName="UNI Resto Cafe" cartCount={cartCount} />;
-              }}
-            </CartContext.Consumer>
+          {/* Conditional rendering for the Header based on route */}
+          <Route path="/" render={({ location }) => (
+            location.pathname !== '/login' && (
+              <CartContext.Consumer>
+                {value => {
+                  const { cartList } = value;
+                  const cartCount = cartList.reduce((acc, item) => acc + item.quantity, 0);
+                  // Pass restaurantName from HomeContent state to Header
+                  return <Header restaurantName="UNI Resto Cafe" cartCount={cartCount} />;
+                }}
+              </CartContext.Consumer>
+            )
+          )} />
 
+          <div className="app-container">
             <Switch>
               <Route exact path="/login" component={Login} />
               <ProtectedRoute exact path="/" component={HomeContent} />

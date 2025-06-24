@@ -13,7 +13,7 @@ class Header extends Component {
     return (
       <header className="header">
         <h1 className="restaurant-heading">{restaurantName}</h1>
-        <div className="cart-section">
+        <div className="cart-section" >
           <button
             type="button"
             className="my-orders-button"

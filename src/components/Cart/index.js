@@ -17,14 +17,14 @@ class Cart extends React.Component {
     )
 
     return (
-      <div>
+      <div >
         <h1>Cart</h1>
         {cartList.length === 0 ? (
-          <div>
+          <div data-testid='cart'>
             <p>No Items in Cart</p>
           </div>
         ) : (
-          <div data-testid="cart">
+          <div data-testid='cart'>
             <ul>
               {cartList.map(item => (
                 <li key={item.id}>

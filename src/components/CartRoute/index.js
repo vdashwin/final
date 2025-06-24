@@ -1,80 +1,76 @@
-import  {Component} from 'react'
+// src/components/CartRoute.js
+import React, {Component} from 'react'
 import CartContext from '../../context/CartContext'
 
-const emptyCartImageUrl =
-  'https://assets.ccbp.in/frontend/react-js/nxt-trendz-empty-cart-img.png'
-
 class CartRoute extends Component {
-  renderEmptyCartView = () => (
+  renderCartItem = (item, value) => {
+    const {
+      incrementCartItemQuantity,
+      decrementCartItemQuantity,
+      removeCartItem,
+    } = value
+
+    const handleIncrement = () => {
+      incrementCartItemQuantity(item.dish_id)
+    }
+
+    const handleDecrement = () => {
+      if (item.quantity > 1) {
+        decrementCartItemQuantity(item.dish_id)
+      } else {
+        removeCartItem(item.dish_id)
+      }
+    }
+
+    const itemTotalPrice = (
+      parseFloat(item.dish_price) * item.quantity
+    ).toFixed(2)
+
+    return (
+      <li key={item.dish_id} className="cart-item">
+        {/* Ensure alt text is present and unique if there are multiple images */}
+        <img
+          src={item.dish_image}
+          alt={`${item.dish_name} dish`}
+          className="cart-item-image"
+        />
+        <div className="cart-item-details">
+          <h4 className="cart-item-name">{item.dish_name}</h4>
+          <p className="cart-item-price">{`${item.dish_currency} ${parseFloat(
+            item.dish_price,
+          ).toFixed(2)}`}</p>{' '}
+          {/* Display unit price */}
+          <div className="cart-item-quantity-controls">
+            <button
+              type="button"
+              onClick={handleDecrement}
+              className="quantity-button"
+            >
+              -
+            </button>
+            <span className="cart-item-quantity">{item.quantity}</span>
+            <button
+              type="button"
+              onClick={handleIncrement}
+              className="quantity-button"
+            >
+              +
+            </button>
+          </div>
+          <p className="cart-item-total-price">{`${item.dish_currency} ${itemTotalPrice}`}</p>
+        </div>
+      </li>
+    )
+  }
+
+  renderEmptyCart = () => (
     <div className="empty-cart-view">
       <img
-        src={emptyCartImageUrl}
-        alt="empty cart"
+        src="https://assets.ccbp.in/frontend/react-js/nxt-trendz-empty-cart-img.png"
+        alt="empty cart" // Explicit alt text for the empty cart image
         className="empty-cart-image"
-        data-testid="empty-cart-image"
       />
-
       <p className="empty-cart-text">Your cart is empty!</p>
-    </div>
-  )
-
-  renderCartItems = (
-    cartList,
-    incrementQuantity,
-    decrementQuantity,
-    removeAllItems,
-  ) => (
-    <div className="cart-items-container">
-      <div className="cart-header">
-        <h1 className="my-cart-heading">My Cart</h1>
-        {cartList.length > 0 && (
-          <button
-            type="button" // Critical for tests
-            className="remove-all-button"
-            onClick={removeAllItems} // Test Case 3 & 11
-          >
-            Remove All
-          </button>
-        )}
-      </div>
-      <ul className="cart-list" data-testid="cart-list">
-        {cartList.map(dish => (
-          <li
-            key={dish.dish_id}
-            className="cart-item"
-            data-testid={`cart-item-${dish.dish_id}`}
-          >
-            <img
-              src={dish.dish_image}
-              alt={dish.dish_name}
-              className="cart-dish-image"
-            />
-            <div className="cart-item-details">
-              <h3 className="cart-dish-name">{dish.dish_name}</h3>{' '}
-              <p className="cart-dish-price">
-                {dish.dish_currency} {dish.dish_price}
-              </p>
-              <div className="cart-quantity-controls">
-                <button
-                  type="button" // Critical for tests
-                  className="cart-quantity-button-decrement"
-                  onClick={() => decrementQuantity(dish.dish_id)}
-                >
-                  -
-                </button>
-                <span className="cart-dish-quantity">{dish.quantity}</span>
-                <button
-                  type="button" // Critical for tests
-                  className="cart-quantity-button-increment"
-                  onClick={() => incrementQuantity(dish.dish_id)}
-                >
-                  +
-                </button>
-              </div>
-            </div>
-          </li>
-        ))}
-      </ul>
     </div>
   )
 
@@ -82,24 +78,41 @@ class CartRoute extends Component {
     return (
       <CartContext.Consumer>
         {value => {
-          const {
-            cartList,
-            incrementCartItemQuantity,
-            decrementCartItemQuantity,
-            removeAllCartItems,
-          } = value
+          const {cartList, removeAllCartItems} = value
           const showEmptyView = cartList.length === 0
+
+          const totalOrderPrice = cartList
+            .reduce((acc, item) => {
+              return acc + parseFloat(item.dish_price) * item.quantity
+            }, 0)
+            .toFixed(2)
 
           return (
             <div className="cart-route-container">
-              {showEmptyView
-                ? this.renderEmptyCartView()
-                : this.renderCartItems(
-                    cartList,
-                    incrementCartItemQuantity,
-                    decrementCartItemQuantity,
-                    removeAllCartItems,
-                  )}
+              {showEmptyView ? (
+                this.renderEmptyCart()
+              ) : (
+                <div className="cart-content-container">
+                  <h1 className="cart-heading">My Cart</h1>
+                  <button
+                    type="button"
+                    className="remove-all-button"
+                    onClick={removeAllCartItems}
+                  >
+                    Remove All
+                  </button>
+                  <ul className="cart-items-list">
+                    {cartList.map(item => this.renderCartItem(item, value))}
+                  </ul>
+                  <div className="order-summary">
+                    {/* Ensure direct text content for the total price */}
+                    <h3>{`Order Total: INR ${totalOrderPrice}`}</h3>
+                    <button type="button" className="place-order-button">
+                      Place Order
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           )
         }}
