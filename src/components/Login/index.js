@@ -1,4 +1,4 @@
-// src/components/Login.js (Example structure, adjust to your actual login component)
+
 import React, {Component} from 'react'
 import Cookies from 'js-cookie'
 import {Redirect} from 'react-router-dom'
@@ -23,7 +23,7 @@ class Login extends Component {
   onSubmitSuccess = jwtToken => {
     Cookies.set('jwt_token', jwtToken, {expires: 30})
     const {history} = this.props
-    history.replace('/') // Navigate to home page on successful login
+    history.replace('/') 
   }
 
   onSubmitFailure = errorMsg => {
@@ -34,7 +34,7 @@ class Login extends Component {
     event.preventDefault()
     const {username, password} = this.state
     const userDetails = {username, password}
-    const url = 'https://apis.ccbp.in/login' // Replace with your actual login API
+    const url = 'https://apis.ccbp.in/login' 
     const options = {
       method: 'POST',
       body: JSON.stringify(userDetails),
@@ -84,7 +84,7 @@ class Login extends Component {
             Login
           </button>
           {showError && <p className="error-message">{errorMsg}</p>}{' '}
-          {/* Ensure direct text for testing */}
+          
         </form>
       </div>
     )
